@@ -1,11 +1,19 @@
 import cv2 as cv
 from camara import Camara
+from extractorCaracteristicas import ExtractorCaracteristicas
+from clasificador import Clasificador
 
-cam = Camara(1)
-imagenOriginal, imagenCorregida, imagenEscalaGrises = cam.getImagenes()
-cv.imshow("Imagen", imagenOriginal)
-cv.imshow("Imagen Gris", imagenEscalaGrises)
-cv.imshow("Imagen corregida", imagenCorregida)
+camara = Camara(1)
+imagenOriginal, imagenCorregida, imagenEscalaGrises = camara.getImagenes()
+
+cv.imshow('Imagen', imagenOriginal)
+
+caracteristicas = ExtractorCaracteristicas(imagenEscalaGrises)
+caracteristicasObjetos = caracteristicas.extraerCaracteristicas()
+
+clasificador = Clasificador()
+imagenConObjetosClasficados = clasificador.colocarEtiqueta(imagenCorregida, caracteristicasObjetos)
+
+cv.imshow('IMagen', imagenConObjetosClasficados)
 
 cv.waitKey(0)
-

@@ -10,10 +10,18 @@ class Clasificador:
         self.listaObjetosDefinidos.append(Objeto("Vasito", (14500, 1500), (570, 80), (130, 10), (0.64, 0.4)))
         self.listaObjetosDefinidos.append(Objeto("Lata", (4100, 1600), (750, 230), (65, 25), (0.6, 0.2)))
 
-    def colocarEtiqueta(self, imagen, area, perimetro, diametroEquivalente, extent, puntoCentral):
-        for objeto in self.listaObjetosDefinidos:
-            objeto.calcularUmbral(area, perimetro, diametroEquivalente, extent)
-            if objeto.isObjeto():
-                cv.putText(imagen, objeto.nombre, puntoCentral, cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 180), 1)
+    def colocarEtiqueta(self, imagen, caracteristicasObjetos):
+
+        for caracteristicas in caracteristicasObjetos:
+            seReconocioObjeto = False
+
+            for objeto in self.listaObjetosDefinidos:
+                objeto.calcularUmbral(caracteristicas[1], caracteristicas[2], caracteristicasObjetos[3], caracteristicas[4])
+                if objeto.isObjeto():
+                    cv.putText(imagen, objeto.nombre, caracteristicas[0], cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 180), 1)
+                    seReconocioObjeto = True
+                    break
+            if not seReconocioObjeto:
+                cv.putText(imagen, "Desconocido", caracteristicas[0], cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 180), 1)
 
         return imagen

@@ -7,30 +7,29 @@ class Camara:
 
     def __tomarImagen(self):
         if self.__captura.isOpened():
-            isImageCapture, self.imagenOriginal = self.__captura.read()
-
-        print("No se puede abrir la camara")
-        return None
+            isImageCapture, self.__imagenOriginal = self.__captura.read()
+        else:
+            print("No se puede abrir la camara")
 
     def tomarImagenCorregida(self):
         self.__tomarImagen()
-        self.imagenCorregida = self.imagenOriginal.copy()
+        self.__imagenCorregida = self.__imagenOriginal.copy()
         self.ajustarBrillo()
         self.ajustarConstraste()
 
-        return self.imagenCorregida
+        return self.__imagenCorregida
 
     def getImagenCorregidaEscalaGrises(self):
-        return cv.cvtColor(self.imagenCorregida, cv.COLOR_BGR2GRAY)
+        return cv.cvtColor(self.__imagenCorregida, cv.COLOR_BGR2GRAY)
 
     def getImagenes(self):
         self.tomarImagenCorregida()
-        return self.imagenOriginal, self.imagenCorregida, self.getImagenCorregidaEscalaGrises()
+        return self.__imagenOriginal, self.__imagenCorregida, self.getImagenCorregidaEscalaGrises()
 
     def ajustarBrillo(self):
-        self.imagenCorregida[:, :, 0] = cv.add(self.imagenOriginal[:, :, 0], -175)  # Canal azul
-        self.imagenCorregida[:, :, 1] = cv.add(self.imagenOriginal[:, :, 1], -180)  # Canal  verde
-        self.imagenCorregida[:, :, 2] = cv.add(self.imagenOriginal[:, :, 2], -150)  # Canal rojo
+        self.__imagenCorregida[:, :, 0] = cv.add(self.__imagenOriginal[:, :, 0], -175)  # Canal azul
+        self.__imagenCorregida[:, :, 1] = cv.add(self.__imagenOriginal[:, :, 1], -180)  # Canal  verde
+        self.__imagenCorregida[:, :, 2] = cv.add(self.__imagenOriginal[:, :, 2], -150)  # Canal rojo
 
     def ajustarConstraste(self):
-        self.imagenCorregida = cv.convertScaleAbs(self.imagenOriginal, self.imagenCorregida, 4, 0)
+        self.__imagenCorregida = cv.convertScaleAbs(self.__imagenOriginal, self.__imagenCorregida, 4, 0)
