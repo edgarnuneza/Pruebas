@@ -11,7 +11,7 @@ class ExtractorCaracteristicas:
         self.__binarizar()
         self.__listaCaracteristicasObjetos = list()
 
-        imagen, self.contornos, hierarchy = cv.findContours(self.__imagenBinarizada, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+        self.contornos, hierarchy = cv.findContours(self.__imagenBinarizada, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
         print(len(self.contornos))
         for contorno in self.contornos:
             perimetro = cv.arcLength(contorno, True)
@@ -50,7 +50,6 @@ class ExtractorCaracteristicas:
         # Store the center of the object
         cntr = (int(mean[0, 0]), int(mean[0, 1]))
 
-
         cv.circle(self.__imagen, cntr, 3, (255, 0, 255), 2)
         p1 = (cntr[0] + 0.02 * eigenvectors[0, 0] * eigenvalues[0, 0],
               cntr[1] + 0.02 * eigenvectors[0, 1] * eigenvalues[0, 0])
@@ -62,7 +61,7 @@ class ExtractorCaracteristicas:
 
         return angle, cntr
 
-    def drawAxis(self, p_, q_, colour, scale):
+    def drawAxis(self, imagen, p_, q_, colour, scale):
         p = list(p_)
         q = list(q_)
 
@@ -71,12 +70,12 @@ class ExtractorCaracteristicas:
 
         q[0] = p[0] - scale * hypotenuse * cos(angle)
         q[1] = p[1] - scale * hypotenuse * sin(angle)
-        cv.line(self.__imagen, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv.LINE_AA)
+        cv.line(imagen, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv.LINE_AA)
 
         p[0] = q[0] + 9 * cos(angle + pi / 4)
         p[1] = q[1] + 9 * sin(angle + pi / 4)
-        cv.line(self.__imagen, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv.LINE_AA)
+        cv.line(imagen, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv.LINE_AA)
 
         p[0] = q[0] + 9 * cos(angle - pi / 4)
         p[1] = q[1] + 9 * sin(angle - pi / 4)
-        cv.line(self.__imagen, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv.LINE_AA)
+        cv.line(imagen, (int(p[0]), int(p[1])), (int(q[0]), int(q[1])), colour, 1, cv.LINE_AA)

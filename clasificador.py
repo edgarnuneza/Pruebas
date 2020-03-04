@@ -16,7 +16,7 @@ class Clasificador:
             seReconocioObjeto = False
 
             for objeto in self.listaObjetosDefinidos:
-                objeto.calcularUmbral(caracteristicas[1], caracteristicas[2], caracteristicasObjetos[3], caracteristicas[4])
+                objeto.calcularUmbral(caracteristicas[1], caracteristicas[2], caracteristicas[3], caracteristicas[4])
                 if objeto.isObjeto():
                     cv.putText(imagen, objeto.nombre, caracteristicas[0], cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 180), 1)
                     seReconocioObjeto = True
